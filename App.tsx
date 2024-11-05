@@ -2,24 +2,17 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { View, Text } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { theme } from './src/config/theme';
 import type { RootStackParamList } from './src/types/navigation';
 
+// Import screens
+import { SocialFeedScreen } from './src/features/social/screens/SocialFeedScreen';
+import { ForecastScreen } from './src/features/forecast/screens/ForecastScreen';
+import { RutTrackerScreen } from './src/features/rutTracker/screens/RutTrackerScreen';
+import { ProfileScreen } from './src/features/profile/screens/ProfileScreen';
+
 const Tab = createBottomTabNavigator<RootStackParamList>();
-
-// Placeholder components
-const PlaceholderScreen = ({ name }: { name: string }) => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>{name} Screen</Text>
-  </View>
-);
-
-const HomeScreen = () => <PlaceholderScreen name="Home" />;
-const ForecastScreen = () => <PlaceholderScreen name="Forecast" />;
-const PostScreen = () => <PlaceholderScreen name="Post" />;
-const RutTrackerScreen = () => <PlaceholderScreen name="Rut Tracker" />;
-const ProfileScreen = () => <PlaceholderScreen name="Profile" />;
 
 export default function App() {
   return (
@@ -35,11 +28,42 @@ export default function App() {
             headerTintColor: theme.colors.background,
           }}
         >
-          <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Forecast" component={ForecastScreen} />
-          <Tab.Screen name="Post" component={PostScreen} />
-          <Tab.Screen name="RutTracker" component={RutTrackerScreen} />
-          <Tab.Screen name="Profile" component={ProfileScreen} />
+          <Tab.Screen
+            name="Home"
+            component={SocialFeedScreen}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="home" color={color} size={size} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Forecast"
+            component={ForecastScreen}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="weather-partly-cloudy" color={color} size={size} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="RutTracker"
+            component={RutTrackerScreen}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="forest" color={color} size={size} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="account" color={color} size={size} />
+              ),
+            }}
+          />
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
