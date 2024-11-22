@@ -1,175 +1,76 @@
-import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, FlatList, RefreshControl, TouchableOpacity, ScrollView } from 'react-native';
-import { Text, Surface, FAB, Searchbar, Chip, Banner, Card } from 'react-native-paper';
-import { theme } from '../../../config/theme';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import React from 'react';
+import { View, FlatList } from 'react-native';
+import { FAB, Card, Title, Paragraph, useTheme, Avatar } from 'react-native-paper';
 
-// Mock data for initial testing
-const mockPosts = [
-  {
-    id: '1',
-    image: 'https://placeholder.com/300x200',
-    title: '8-Point Buck',
-    description: 'Great morning hunt!',
-    location: 'Madison County, GA',
-    species: 'Whitetail Deer',
-    timestamp: new Date().toISOString(),
-  },
-  {
-    id: '2',
-    image: 'https://placeholder.com/300x200',
-    title: '5lb Bass',
-    description: 'Caught on topwater',
-    location: 'Lake Oconee, GA',
-    species: 'Largemouth Bass',
-    timestamp: new Date().toISOString(),
-  },
-];
-
-export default function SocialFeedScreen({ navigation }) {
-  const [posts, setPosts] = useState(mockPosts);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [refreshing, setRefreshing] = useState(false);
-  const [selectedSpecies, setSelectedSpecies] = useState(null);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    // Simulate refresh
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+const SocialFeedScreen = ({ navigation }) => {
+  const theme = useTheme();
+  const [posts, setPosts] = React.useState([
+    {
+      id: '1',
+      title: '8-Point Buck',
+      location: 'Montgomery County, VA',
+      species: 'Whitetail Deer',
+      date: '2024-02-20',
+      likes: 12
+    },
+    {
+      id: '2',
+      title: 'Lake Trophy',
+      location: 'Smith Mountain Lake, VA',
+      species: 'Bass',
+      date: '2024-02-19',
+      likes: 8
+    },
+  ]);
 
   const getSpeciesIcon = (species) => {
-    if (species.toLowerCase().includes('bass') ||
-        species.toLowerCase().includes('trout') ||
-        species.toLowerCase().includes('fish')) {
-      return 'fish';
-    } else if (species.toLowerCase().includes('deer')) {
-      return 'bow-arrow';
-    } else if (species.toLowerCase().includes('turkey')) {
-      return 'bird';
-    }
+    if (species.toLowerCase().includes('deer')) return 'bow-arrow';
+    if (species.toLowerCase().includes('bass') || species.toLowerCase().includes('fish')) return 'fish';
+    if (species.toLowerCase().includes('turkey')) return 'bird';
     return 'paw';
   };
 
-  const renderPost = ({ item }) => (
-    <Card style={styles.postCard}>
-      <Card.Cover source={{ uri: item.image }} />
-      <Card.Title title={item.title} subtitle={item.timestamp} />
-      <Card.Content>
-        <Text>{item.description}</Text>
-        <View style={styles.tagContainer}>
-          <Chip icon="map-marker" style={styles.chip}>{item.location}</Chip>
-          <Chip icon={getSpeciesIcon(item.species)} style={styles.chip}>{item.species}</Chip>
-        </View>
-      </Card.Content>
-    </Card>
-  );
-
-  const filterPosts = () => {
-    return posts.filter(post => {
-      const matchesSearch = post.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          post.species.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesSpecies = !selectedSpecies || post.species === selectedSpecies;
-      return matchesSearch && matchesSpecies;
-    });
-  };
-
   return (
-    <View style={styles.container}>
-      <Searchbar
-        placeholder="Search by location or species"
-        onChangeText={setSearchQuery}
-        value={searchQuery}
-        style={styles.searchbar}
-        mode="bar"
-      />
-
-      <View style={styles.filterContainer}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {['Whitetail Deer', 'Largemouth Bass', 'Turkey', 'Trout'].map((species) => (
-            <Chip
-              key={species}
-              selected={selectedSpecies === species}
-              onPress={() => setSelectedSpecies(selectedSpecies === species ? null : species)}
-              style={styles.filterChip}
-              icon={getSpeciesIcon(species)}
-            >
-              {species}
-            </Chip>
-          ))}
-        </ScrollView>
-      </View>
-
+    <View style={{ flex: 1, backgroundColor: '#f5f5f5' }}>
       <FlatList
-        data={filterPosts()}
-        renderItem={renderPost}
+        data={posts}
+        renderItem={({ item }) => (
+          <Card style={{ margin: 8, elevation: 2 }}>
+            <Card.Content>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                <Avatar.Icon size={40} icon={getSpeciesIcon(item.species)} />
+                <View style={{ marginLeft: 12 }}>
+                  <Title>{item.title}</Title>
+                  <Paragraph style={{ color: '#666' }}>{item.species}</Paragraph>
+                </View>
+              </View>
+              <Paragraph>📍 {item.location}</Paragraph>
+              <Paragraph>📅 {item.date}</Paragraph>
+              <View style={{ flexDirection: 'row', marginTop: 8 }}>
+                <Paragraph>❤️ {item.likes} likes</Paragraph>
+              </View>
+            </Card.Content>
+          </Card>
+        )}
         keyExtractor={item => item.id}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        contentContainerStyle={styles.listContainer}
       />
-
-      <View style={styles.adContainer}>
-        <Text style={styles.adText}>Advertisement Space</Text>
-      </View>
-
       <FAB
         icon="plus"
-        style={styles.fab}
+        style={{
+          position: 'absolute',
+          margin: 16,
+          right: 0,
+          bottom: 0,
+          backgroundColor: theme.colors.primary,
+        }}
         onPress={() => navigation.navigate('CreatePost')}
-        color={theme.colors.background}
       />
+      {/* Ad Space */}
+      <View style={{ height: 50, backgroundColor: '#eee', position: 'absolute', bottom: 0, left: 0, right: 0, justifyContent: 'center', alignItems: 'center' }}>
+        <Paragraph>Ad Space</Paragraph>
+      </View>
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  searchbar: {
-    margin: theme.spacing.md,
-  },
-  filterContainer: {
-    paddingHorizontal: theme.spacing.md,
-    marginBottom: theme.spacing.md,
-  },
-  filterChip: {
-    marginRight: theme.spacing.sm,
-  },
-  listContainer: {
-    padding: theme.spacing.md,
-  },
-  postCard: {
-    marginBottom: theme.spacing.md,
-  },
-  tagContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: theme.spacing.sm,
-  },
-  chip: {
-    marginRight: theme.spacing.sm,
-    marginTop: theme.spacing.sm,
-  },
-  fab: {
-    position: 'absolute',
-    margin: theme.spacing.md,
-    right: 0,
-    bottom: 60,
-    backgroundColor: theme.colors.primary,
-  },
-  adContainer: {
-    height: 60,
-    backgroundColor: '#f0f0f0',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  adText: {
-    color: theme.colors.placeholder,
-  },
-});
+export default SocialFeedScreen;
