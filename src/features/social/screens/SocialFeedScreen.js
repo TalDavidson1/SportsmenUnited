@@ -54,7 +54,7 @@ export default function SocialFeedScreen({ navigation }) {
   };
 
   const renderPost = ({ item }) => (
-    <Card style={[styles.postCard, { elevation: 0 }]} mode="elevated">
+    <Card style={styles.postCard}>
       <Card.Cover source={{ uri: item.image }} />
       <Card.Title title={item.title} subtitle={item.timestamp} />
       <Card.Content>
@@ -82,7 +82,7 @@ export default function SocialFeedScreen({ navigation }) {
         placeholder="Search by location or species"
         onChangeText={setSearchQuery}
         value={searchQuery}
-        style={[styles.searchbar, { elevation: 0 }]}
+        style={styles.searchbar}
         mode="bar"
       />
 
@@ -95,7 +95,6 @@ export default function SocialFeedScreen({ navigation }) {
               onPress={() => setSelectedSpecies(selectedSpecies === species ? null : species)}
               style={styles.filterChip}
               icon={getSpeciesIcon(species)}
-              mode="flat"
             >
               {species}
             </Chip>
@@ -122,7 +121,6 @@ export default function SocialFeedScreen({ navigation }) {
         style={styles.fab}
         onPress={() => navigation.navigate('CreatePost')}
         color={theme.colors.background}
-        mode="elevated"
       />
     </View>
   );
@@ -135,7 +133,6 @@ const styles = StyleSheet.create({
   },
   searchbar: {
     margin: theme.spacing.md,
-    elevation: 4,
   },
   filterContainer: {
     paddingHorizontal: theme.spacing.md,
@@ -149,7 +146,6 @@ const styles = StyleSheet.create({
   },
   postCard: {
     marginBottom: theme.spacing.md,
-    elevation: 4,
   },
   tagContainer: {
     flexDirection: 'row',

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Surface, Button, SegmentedButtons } from 'react-native-paper';
+import { Text, Surface, Button, SegmentedButtons, TextInput } from 'react-native-paper';
 import { theme } from '../../../config/theme';
 
 export default function RutTrackerScreen() {
   const [rutPhase, setRutPhase] = useState('');
   const [activityLevel, setActivityLevel] = useState('');
+  const [county, setCounty] = useState('');
+  const [state, setState] = useState('');
 
   const rutPhases = [
     { label: 'Pre-Rut', value: 'pre-rut' },
@@ -23,6 +25,22 @@ export default function RutTrackerScreen() {
     <View style={styles.container}>
       <Surface style={styles.surface}>
         <Text style={styles.title}>Rut Activity Tracker</Text>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Location</Text>
+          <TextInput
+            label="County"
+            value={county}
+            onChangeText={setCounty}
+            style={styles.input}
+          />
+          <TextInput
+            label="State"
+            value={state}
+            onChangeText={setState}
+            style={styles.input}
+          />
+        </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Rut Phase</Text>
@@ -81,6 +99,9 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     color: theme.colors.primary,
+    marginBottom: theme.spacing.sm,
+  },
+  input: {
     marginBottom: theme.spacing.sm,
   },
   button: {

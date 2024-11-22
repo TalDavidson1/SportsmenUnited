@@ -1,38 +1,37 @@
-import { MD3LightTheme, configureFonts } from 'react-native-paper';
+import { MD3LightTheme } from 'react-native-paper';
+import { DefaultTheme } from '@react-navigation/native';
 
-const fontConfig = {
-  fontFamily: 'System',
+const colors = {
+  primary: '#1B2B5B',
+  secondary: '#D42E34',
+  background: '#FFFFFF',
+  surface: '#FFFFFF',
+  text: '#1B2B5B',
 };
 
 export const theme = {
   ...MD3LightTheme,
-  fonts: configureFonts({config: fontConfig}),
   colors: {
     ...MD3LightTheme.colors,
-    primary: '#1B2B5B', // Navy blue from logo
-    secondary: '#D42E34',  // Red from logo
-    background: '#FFFFFF',
-    surface: '#FFFFFF',
-    text: '#1B2B5B',
-    placeholder: '#757575',
+    ...colors,
   },
-  spacing: {
-    xs: 4,
-    sm: 8,
-    md: 16,
-    lg: 24,
-    xl: 32,
+  elevation: {
+    level0: 0,
+    level1: 2,
+    level2: 3,
+    level3: 4,
+    level4: 6,
+    level5: 8,
   },
 };
 
 export const navigationTheme = {
-  ...MD3LightTheme,
+  ...DefaultTheme,
   colors: {
-    ...MD3LightTheme.colors,
-    primary: theme.colors.primary,
-    background: theme.colors.background,
-    card: theme.colors.background,
-    text: theme.colors.text,
-    border: theme.colors.primary,
+    ...DefaultTheme.colors,
+    primary: colors.primary,
+    background: colors.background,
+    card: colors.surface,
+    text: colors.text,
   },
 };
