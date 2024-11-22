@@ -3,6 +3,7 @@ export interface Post {
   userId: string;
   title: string;
   description?: string;
+  type: 'harvest' | 'catch';
   location: {
     latitude: number;
     longitude: number;
@@ -11,12 +12,21 @@ export interface Post {
   species: string;
   imageUrl?: string;
   likes: number;
-  createdAt: string;
+  date: string;
+  comments: Comment[];
+}
+
+export interface Comment {
+  id: string;
+  userId: string;
+  text: string;
+  date: string;
 }
 
 export interface CreatePostData {
   title: string;
   description?: string;
+  type: 'harvest' | 'catch';
   location: {
     latitude: number;
     longitude: number;
@@ -27,11 +37,16 @@ export interface CreatePostData {
 }
 
 export interface PostFilter {
-  species?: string[];
+  type?: 'harvest' | 'catch';
+  species?: string;
   location?: {
     latitude: number;
     longitude: number;
     radiusKm: number;
+  };
+  dateRange?: {
+    start: string;
+    end: string;
   };
 }
 
@@ -51,3 +66,12 @@ export const MOCK_SPECIES: Species[] = [
   { id: '7', name: 'Elk', category: 'game' },
   { id: '8', name: 'Rainbow Trout', category: 'fish' },
 ];
+
+export type RootStackParamList = {
+  Home: undefined;
+  CreatePost: undefined;
+  PostDetails: { postId: string };
+  Profile: undefined;
+  Forecast: undefined;
+  RutTracker: undefined;
+};
