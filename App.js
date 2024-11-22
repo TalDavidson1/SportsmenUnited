@@ -1,10 +1,10 @@
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider as PaperProvider, MD3LightTheme } from 'react-native-paper';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const theme = {
   ...MD3LightTheme,
@@ -68,7 +68,7 @@ export default function App() {
                     iconName = focused ? 'weather-sunny' : 'weather-partly-cloudy';
                     break;
                   case 'Rut Tracker':
-                    iconName = focused ? 'arrow-projectile' : 'arrow-projectile';
+                    iconName = focused ? 'bow-arrow' : 'bow-arrow';
                     break;
                   case 'Profile':
                     iconName = focused ? 'account' : 'account-outline';
@@ -80,7 +80,7 @@ export default function App() {
                 return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
               },
               tabBarActiveTintColor: theme.colors.primary,
-              tabBarInactiveTintColor: theme.colors.placeholder,
+              tabBarInactiveTintColor: 'gray',
               headerStyle: {
                 backgroundColor: theme.colors.primary,
               },
